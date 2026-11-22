@@ -1,0 +1,13 @@
+# donnees kaggle
+data/*.csv
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# soumissions
+submissions/*.csv
+
+.DS_Store
