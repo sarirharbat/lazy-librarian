@@ -86,6 +86,23 @@ On a essayé plusieurs poids et on a gardé 0.8 pour l'item-to-item et 0.2 pour 
 
 Code : src/melange.py et tentative_6.py
 
+### Tentative 7 : groupes de lecteurs (clustering)
+
+Pour la deuxième partie on passe à l'apprentissage non supervisé. L'idée est de regrouper les lecteurs qui lisent sur les mêmes sujets, puis de proposer à chacun les livres les plus empruntés de son groupe.
+
+- Chaque lecteur est représenté par les sujets de ses livres (colonne Subjects de items.csv), transformés en TF-IDF.
+- On fait les groupes avec k-means.
+- Pour choisir le nombre de groupes on a utilisé la méthode du coude : on calcule l'inertie pour k de 2 à 50. La courbe se casse à k = 11, donc on a pris 11 groupes.
+- Chaque lecteur reçoit les livres les plus empruntés de son groupe. S'il en manque on complète avec les plus populaires.
+
+![Méthode du coude](coude.png)
+
+Les groupes ont du sens : droit suisse, histoire suisse, soins infirmiers, mangas, BD, romans, livres jeunesse, dictionnaires, guides de voyage, manuels scolaires, et un grand groupe plus mélangé.
+
+Par contre le résultat n'est pas celui qu'on espérait. Le score Kaggle est 0.02392, très loin de la baseline. Tous les lecteurs d'un même groupe reçoivent les mêmes 10 livres, donc au final c'est presque la tentative 1 mais par groupe. En plus le modèle ne tient presque plus compte de ce que le lecteur a emprunté lui-même, alors que les réemprunts comptent beaucoup (tentative 3). Et le grand groupe mélangé contient 43% des lecteurs, eux reçoivent surtout des livres populaires.
+
+Code : src/clustering.py, coude.py et tentative_7.py
+
 ## 6. Progression
 
 | Date | Tentative | Score Kaggle |
@@ -96,6 +113,7 @@ Code : src/melange.py et tentative_6.py
 | 21/11 | 4. Item-to-item avec 100 voisins | 0.16349 |
 | 21/11 | 5. User-to-user | 0.15366 |
 | 21/11 | 6. Mélange 0.8 / 0.2 | 0.16644 |
+| 24/11 | 7. Clustering (11 groupes) | 0.02392 |
 | | Baseline | 0.15283 |
 
 ## 7. Gain par rapport à la baseline
@@ -113,6 +131,8 @@ Notre meilleur score Kaggle est 0.16644 avec la tentative 6, contre 0.15283 pour
 | Python | boucles et dictionnaires pour les modèles |
 | VS Code | écrire et lancer le code |
 | pandas | lecture des données et écriture des soumissions |
+| scikit-learn | TF-IDF et k-means |
+| matplotlib | graphique du coude |
 | Streamlit | application |
 | GitHub | partage du code |
 | Kaggle | données et soumissions |
@@ -134,6 +154,12 @@ python tentative_2.py
 ```
 
 Le fichier pour Kaggle est écrit dans le dossier submissions.
+
+Pour refaire le graphique du coude :
+
+```
+python coude.py
+```
 
 Pour l'application :
 
