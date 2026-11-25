@@ -101,7 +101,7 @@ Les groupes ont du sens : droit suisse, histoire suisse, soins infirmiers, manga
 
 Par contre le résultat n'est pas celui qu'on espérait. Le score Kaggle est 0.02392, très loin de la baseline. Tous les lecteurs d'un même groupe reçoivent les mêmes 10 livres, donc au final c'est presque la tentative 1 mais par groupe. En plus le modèle ne tient presque plus compte de ce que le lecteur a emprunté lui-même, alors que les réemprunts comptent beaucoup (tentative 3). Et le grand groupe mélangé contient 43% des lecteurs, eux reçoivent surtout des livres populaires.
 
-**Test non retenu.** Le clustering n'est ni du user-to-user ni de l'item-to-item, alors que les consignes n'autorisent que ces deux méthodes ou un mélange des deux.
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Le clustering n'est ni du user-to-user ni de l'item-to-item, alors que les consignes n'autorisent que ces deux méthodes ou un mélange des deux.
 
 Code : src/clustering.py, coude.py et tentative_7.py
 
@@ -116,7 +116,7 @@ On a ensuite essayé l'autre méthode non supervisée vue en cours : les règles
 
 Le score Kaggle est 0.02721. Comme pour la tentative 3, enlever les livres déjà empruntés fait chuter le score, alors que les réemprunts sont nombreux.
 
-**Test non retenu.** Les règles d'association ne sont ni du user-to-user ni de l'item-to-item, et elles utilisent la librairie mlxtend. Ça ne correspond pas aux consignes.
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Les règles d'association ne sont ni du user-to-user ni de l'item-to-item, et elles utilisent la librairie mlxtend. Ça ne correspond pas aux consignes.
 
 Code : src/regles_association.py et tentative_8.py
 
@@ -129,7 +129,7 @@ Seules, les deux méthodes non supervisées donnent de mauvais scores, mais elle
 
 Le score Kaggle est 0.16768, un peu mieux que la tentative 6.
 
-**Résultat non retenu.** Ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes : seulement du user-to-user, de l'item-to-item ou un mélange des deux. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes : seulement du user-to-user, de l'item-to-item ou un mélange des deux. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
 
 Code : src/melange_complet.py et tentative_9.py
 
@@ -154,7 +154,7 @@ Le contenu apporte une info que les quatre autres modèles n'ont pas, donc on l'
 
 Le score Kaggle est 0.16828, c'est le plus haut qu'on ait eu.
 
-**Résultat non retenu.** Comme la tentative 9, ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Comme la tentative 9, ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
 
 Code : src/melange_contenu.py et tentative_11.py
 
@@ -168,11 +168,11 @@ Code : src/melange_contenu.py et tentative_11.py
 | 21/11 | 4. Item-to-item avec 100 voisins | 0.16349 |
 | 21/11 | 5. User-to-user | 0.15366 |
 | 21/11 | 6. Mélange 0.8 / 0.2 | 0.16644 |
-| 24/11 | 7. Clustering (11 groupes), test non retenu | 0.02392 |
-| 25/11 | 8. Règles d'association, test non retenu | 0.02721 |
-| 25/11 | 9. Mélange complet, test non retenu | 0.16768 |
+| 24/11 | 7. Clustering (11 groupes), $\color{red}{\textbf{non retenu}}$ | 0.02392 |
+| 25/11 | 8. Règles d'association, $\color{red}{\textbf{non retenu}}$ | 0.02721 |
+| 25/11 | 9. Mélange complet, $\color{red}{\textbf{non retenu}}$ | 0.16768 |
 | 25/11 | 10. Contenu (titre, auteur, sujets) | 0.14480 |
-| 25/11 | 11. Mélange complet + contenu, test non retenu | 0.16828 |
+| 25/11 | 11. Mélange complet + contenu, $\color{red}{\textbf{non retenu}}$ | 0.16828 |
 | | Baseline | 0.15283 |
 
 ## 7. Gain par rapport à la baseline
