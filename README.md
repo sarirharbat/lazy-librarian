@@ -3,7 +3,7 @@
 Projet Kaggle : recommander à chaque lecteur les 10 livres qu'il a le plus de chances d'emprunter ensuite.
 
 - Equipe Kaggle : UNIL_
-- Score Kaggle : 0.16644
+- Score Kaggle : 0.16768
 - Vidéo :
 
 ## 1. Objectif
@@ -82,7 +82,7 @@ Code : src/user_to_user.py et tentative_5.py
 
 On s'est dit que les deux modèles pouvaient se compléter, donc on additionne leurs points. Comme les points des deux modèles ne sont pas à la même échelle, on divise d'abord par le maximum de chaque modèle pour que tout soit entre 0 et 1. Ensuite on donne un poids à chacun.
 
-On a essayé plusieurs poids et on a gardé 0.8 pour l'item-to-item et 0.2 pour le user-to-user. Le score Kaggle est 0.166, c'est notre meilleur.
+On a essayé plusieurs poids et on a gardé 0.8 pour l'item-to-item et 0.2 pour le user-to-user. Le score Kaggle est 0.166, c'est notre meilleur score de la première partie.
 
 Code : src/melange.py et tentative_6.py
 
@@ -103,6 +103,30 @@ Par contre le résultat n'est pas celui qu'on espérait. Le score Kaggle est 0.0
 
 Code : src/clustering.py, coude.py et tentative_7.py
 
+### Tentative 8 : règles d'association
+
+On a ensuite essayé l'autre méthode non supervisée vue en cours : les règles d'association, du type "ceux qui empruntent A empruntent aussi B".
+
+- On fait un panier par lecteur avec les livres qu'il a empruntés, et on cherche les paires de livres souvent empruntées ensemble avec fpgrowth.
+- On garde les règles avec une confiance d'au moins 0.35 et un lift plus grand que 1, comme en cours.
+- Le support minimal est de 2 lecteurs. Avec 0.04 comme en cours il ne sortait aucune règle, nos données sont beaucoup plus dispersées.
+- Pour un lecteur, on prend les règles qui partent d'un livre qu'il a emprunté, on enlève les livres qu'il a déjà empruntés et on garde la meilleure règle pour chaque livre, triée par confiance.
+
+Le score Kaggle est 0.02721. Comme pour la tentative 3, enlever les livres déjà empruntés fait chuter le score, alors que les réemprunts sont nombreux.
+
+Code : src/regles_association.py et tentative_8.py
+
+### Tentative 9 : mélange complet
+
+Seules, les deux méthodes non supervisées donnent de mauvais scores, mais elles apportent des infos que les autres modèles n'ont pas : le domaine du lecteur pour le clustering, et les livres souvent empruntés ensemble pour les règles. On a donc fait comme pour la tentative 6 et on a mélangé les quatre modèles.
+
+- Les points de chaque modèle sont divisés par leur maximum pour être entre 0 et 1.
+- Poids : 0.64 pour l'item-to-item, 0.16 pour le user-to-user (les poids de la tentative 6 réduits), 0.1 pour les règles d'association et 0.1 pour le clustering.
+
+Le score Kaggle est 0.16768, c'est notre meilleur. Le gain par rapport à la tentative 6 est petit, mais il montre que les méthodes non supervisées servent quand on les combine avec les autres.
+
+Code : src/melange_complet.py et tentative_9.py
+
 ## 6. Progression
 
 | Date | Tentative | Score Kaggle |
@@ -114,11 +138,13 @@ Code : src/clustering.py, coude.py et tentative_7.py
 | 21/11 | 5. User-to-user | 0.15366 |
 | 21/11 | 6. Mélange 0.8 / 0.2 | 0.16644 |
 | 24/11 | 7. Clustering (11 groupes) | 0.02392 |
+| 25/11 | 8. Règles d'association | 0.02721 |
+| 25/11 | 9. Mélange complet | 0.16768 |
 | | Baseline | 0.15283 |
 
 ## 7. Gain par rapport à la baseline
 
-Notre meilleur score Kaggle est 0.16644 avec la tentative 6, contre 0.15283 pour la baseline. Ça fait 0.01361 de plus, soit environ 9%.
+Notre meilleur score Kaggle est 0.16768 avec la tentative 9, contre 0.15283 pour la baseline. Ça fait 0.01485 de plus, soit environ 10%.
 
 ## 8. Exemples de recommandations
 
@@ -133,6 +159,7 @@ Notre meilleur score Kaggle est 0.16644 avec la tentative 6, contre 0.15283 pour
 | pandas | lecture des données et écriture des soumissions |
 | scikit-learn | TF-IDF et k-means |
 | matplotlib | graphique du coude |
+| mlxtend | règles d'association |
 | Streamlit | application |
 | GitHub | partage du code |
 | Kaggle | données et soumissions |
@@ -153,7 +180,7 @@ Mettre les 3 fichiers de Kaggle dans le dossier data puis lancer la tentative vo
 python tentative_2.py
 ```
 
-Le fichier pour Kaggle est écrit dans le dossier submissions.
+Le fichier pour Kaggle est écrit dans le dossier submissions. Les tentatives 8 et 9 sont plus longues (7 à 9 minutes) à cause de fpgrowth.
 
 Pour refaire le graphique du coude :
 
