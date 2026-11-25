@@ -3,7 +3,7 @@
 Projet Kaggle : recommander à chaque lecteur les 10 livres qu'il a le plus de chances d'emprunter ensuite.
 
 - Equipe Kaggle : UNIL_
-- Score Kaggle retenu : 0.16644
+- Score Kaggle retenu : 0.16800
 - Vidéo :
 
 ## 1. Objectif
@@ -133,6 +133,17 @@ Mélange de la tentative 9 avec le contenu de la tentative 10. Score Kaggle : 0.
 
 Code : dossier des tentatives non retenues
 
+### Tentative 12 : mélange item-to-item, user-to-user et contenu
+
+Comme les tentatives 9 et 11 ne sont pas conformes, on a refait le mélange seulement avec les modèles autorisés : l'item-to-item sur les emprunts, le user-to-user et l'item-to-item sur le contenu de la tentative 10.
+
+- Comme pour la tentative 6, les points de chaque modèle sont divisés par leur maximum pour être entre 0 et 1.
+- Poids : 0.64 pour l'item-to-item, 0.16 pour le user-to-user (les poids de la tentative 6 multipliés par 0.8) et 0.2 pour le contenu.
+
+Le score Kaggle est 0.16800, c'est notre meilleur score retenu. C'est presque autant que la tentative 11 (0.16828), alors qu'on utilise seulement de l'item-to-item et du user-to-user.
+
+Code : src/melange_trois.py et tentative_12.py
+
 ## 6. Progression
 
 | Date | Tentative | Score Kaggle |
@@ -148,11 +159,12 @@ Code : dossier des tentatives non retenues
 | 25/11 | 9. Mélange complet, $\color{red}{\textbf{non retenu}}$ | 0.16768 |
 | 25/11 | 10. Contenu (titre, auteur, sujets) | 0.14480 |
 | 25/11 | 11. Mélange complet + contenu, $\color{red}{\textbf{non retenu}}$ | 0.16828 |
+| 25/11 | 12. Mélange item-to-item, user-to-user et contenu | 0.16800 |
 | | Baseline | 0.15283 |
 
 ## 7. Gain par rapport à la baseline
 
-Notre meilleur score Kaggle retenu est 0.16644 avec la tentative 6, contre 0.15283 pour la baseline. Ça fait 0.01361 de plus, soit environ 9%. Les tentatives 9 et 11 ont un score plus élevé, mais elles ne sont pas retenues car elles ne correspondent pas aux consignes (voir plus haut).
+Notre meilleur score Kaggle retenu est 0.16800 avec la tentative 12, contre 0.15283 pour la baseline. Ça fait 0.01517 de plus, soit environ 10%. La tentative 11 a un score un peu plus élevé, mais elle n'est pas retenue car elle ne correspond pas aux consignes (voir plus haut).
 
 ## 8. Exemples de recommandations
 
