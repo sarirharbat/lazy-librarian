@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
 from src.lancement import charger_emprunts
-from src.clustering import representer
+from tentatives_non_retenues_pour_non_conformite_aux_consignes.clustering import representer
 
 historique = charger_emprunts()
 X = representer(historique)
@@ -18,4 +18,4 @@ plt.plot(range(2, 51), inerties, marker="o")
 plt.title("Méthode du coude")
 plt.xlabel("Nombre de groupes k")
 plt.ylabel("Inertie")
-plt.savefig("coude.png")
+plt.savefig("tentatives_non_retenues_pour_non_conformite_aux_consignes/coude.png")
