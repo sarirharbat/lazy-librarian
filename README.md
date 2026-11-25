@@ -3,7 +3,7 @@
 Projet Kaggle : recommander à chaque lecteur les 10 livres qu'il a le plus de chances d'emprunter ensuite.
 
 - Equipe Kaggle : UNIL_
-- Score Kaggle : 0.16828
+- Score Kaggle retenu : 0.16644
 - Vidéo :
 
 ## 1. Objectif
@@ -101,6 +101,8 @@ Les groupes ont du sens : droit suisse, histoire suisse, soins infirmiers, manga
 
 Par contre le résultat n'est pas celui qu'on espérait. Le score Kaggle est 0.02392, très loin de la baseline. Tous les lecteurs d'un même groupe reçoivent les mêmes 10 livres, donc au final c'est presque la tentative 1 mais par groupe. En plus le modèle ne tient presque plus compte de ce que le lecteur a emprunté lui-même, alors que les réemprunts comptent beaucoup (tentative 3). Et le grand groupe mélangé contient 43% des lecteurs, eux reçoivent surtout des livres populaires.
 
+**Test non retenu.** Le clustering n'est ni du user-to-user ni de l'item-to-item, alors que les consignes n'autorisent que ces deux méthodes ou un mélange des deux.
+
 Code : src/clustering.py, coude.py et tentative_7.py
 
 ### Tentative 8 : règles d'association
@@ -114,6 +116,8 @@ On a ensuite essayé l'autre méthode non supervisée vue en cours : les règles
 
 Le score Kaggle est 0.02721. Comme pour la tentative 3, enlever les livres déjà empruntés fait chuter le score, alors que les réemprunts sont nombreux.
 
+**Test non retenu.** Les règles d'association ne sont ni du user-to-user ni de l'item-to-item, et elles utilisent la librairie mlxtend. Ça ne correspond pas aux consignes.
+
 Code : src/regles_association.py et tentative_8.py
 
 ### Tentative 9 : mélange complet
@@ -123,7 +127,9 @@ Seules, les deux méthodes non supervisées donnent de mauvais scores, mais elle
 - Les points de chaque modèle sont divisés par leur maximum pour être entre 0 et 1.
 - Poids : 0.64 pour l'item-to-item, 0.16 pour le user-to-user (les poids de la tentative 6 réduits), 0.1 pour les règles d'association et 0.1 pour le clustering.
 
-Le score Kaggle est 0.16768, mieux que la tentative 6. Le gain est petit, mais il montre que les méthodes non supervisées servent quand on les combine avec les autres.
+Le score Kaggle est 0.16768, un peu mieux que la tentative 6.
+
+**Résultat non retenu.** Ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes : seulement du user-to-user, de l'item-to-item ou un mélange des deux. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
 
 Code : src/melange_complet.py et tentative_9.py
 
@@ -146,7 +152,9 @@ Code : src/contenu.py et tentative_10.py
 
 Le contenu apporte une info que les quatre autres modèles n'ont pas, donc on l'a ajouté au mélange de la tentative 9. On garde les proportions de la tentative 9 multipliées par 0.8 et on donne 0.2 au contenu : 0.512 pour l'item-to-item, 0.128 pour le user-to-user, 0.08 pour les règles d'association, 0.08 pour le clustering et 0.2 pour le contenu.
 
-Le score Kaggle est 0.16828, c'est notre meilleur.
+Le score Kaggle est 0.16828, c'est le plus haut qu'on ait eu.
+
+**Résultat non retenu.** Comme la tentative 9, ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
 
 Code : src/melange_contenu.py et tentative_11.py
 
@@ -160,16 +168,16 @@ Code : src/melange_contenu.py et tentative_11.py
 | 21/11 | 4. Item-to-item avec 100 voisins | 0.16349 |
 | 21/11 | 5. User-to-user | 0.15366 |
 | 21/11 | 6. Mélange 0.8 / 0.2 | 0.16644 |
-| 24/11 | 7. Clustering (11 groupes) | 0.02392 |
-| 25/11 | 8. Règles d'association | 0.02721 |
-| 25/11 | 9. Mélange complet | 0.16768 |
+| 24/11 | 7. Clustering (11 groupes), test non retenu | 0.02392 |
+| 25/11 | 8. Règles d'association, test non retenu | 0.02721 |
+| 25/11 | 9. Mélange complet, test non retenu | 0.16768 |
 | 25/11 | 10. Contenu (titre, auteur, sujets) | 0.14480 |
-| 25/11 | 11. Mélange complet + contenu | 0.16828 |
+| 25/11 | 11. Mélange complet + contenu, test non retenu | 0.16828 |
 | | Baseline | 0.15283 |
 
 ## 7. Gain par rapport à la baseline
 
-Notre meilleur score Kaggle est 0.16828 avec la tentative 11, contre 0.15283 pour la baseline. Ça fait 0.01545 de plus, soit environ 10%.
+Notre meilleur score Kaggle retenu est 0.16644 avec la tentative 6, contre 0.15283 pour la baseline. Ça fait 0.01361 de plus, soit environ 9%. Les tentatives 9 et 11 ont un score plus élevé, mais elles ne sont pas retenues car elles ne correspondent pas aux consignes (voir plus haut).
 
 ## 8. Exemples de recommandations
 
@@ -183,9 +191,9 @@ Notre meilleur score Kaggle est 0.16828 avec la tentative 11, contre 0.15283 pou
 | VS Code | écrire et lancer le code |
 | pandas | lecture des données et écriture des soumissions |
 | numpy | tri des livres les plus proches |
-| scikit-learn | TF-IDF, k-means et similarité cosinus |
-| matplotlib | graphique du coude |
-| mlxtend | règles d'association |
+| scikit-learn | TF-IDF et similarité cosinus (k-means seulement pour un test non retenu) |
+| matplotlib | graphique du coude (test non retenu) |
+| mlxtend | règles d'association (test non retenu) |
 | Streamlit | application |
 | GitHub | partage du code |
 | Kaggle | données et soumissions |
