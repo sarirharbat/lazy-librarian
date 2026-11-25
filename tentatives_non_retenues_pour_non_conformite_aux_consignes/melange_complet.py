@@ -1,8 +1,8 @@
 import pandas as pd
 from src.item_to_item import ItemToItem
 from src.user_to_user import UserToUser
-from src.regles_association import ReglesAssociation
-from src.clustering import Clustering
+from tentatives_non_retenues_pour_non_conformite_aux_consignes.regles_association import ReglesAssociation
+from tentatives_non_retenues_pour_non_conformite_aux_consignes.clustering import Clustering
 
 
 def ajouter(compteur, cle, valeur):
