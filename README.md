@@ -3,7 +3,7 @@
 Projet Kaggle : recommander à chaque lecteur les 10 livres qu'il a le plus de chances d'emprunter ensuite.
 
 - Equipe Kaggle : UNIL_
-- Score Kaggle : 0.16768
+- Score Kaggle : 0.16828
 - Vidéo :
 
 ## 1. Objectif
@@ -123,9 +123,32 @@ Seules, les deux méthodes non supervisées donnent de mauvais scores, mais elle
 - Les points de chaque modèle sont divisés par leur maximum pour être entre 0 et 1.
 - Poids : 0.64 pour l'item-to-item, 0.16 pour le user-to-user (les poids de la tentative 6 réduits), 0.1 pour les règles d'association et 0.1 pour le clustering.
 
-Le score Kaggle est 0.16768, c'est notre meilleur. Le gain par rapport à la tentative 6 est petit, mais il montre que les méthodes non supervisées servent quand on les combine avec les autres.
+Le score Kaggle est 0.16768, mieux que la tentative 6. Le gain est petit, mais il montre que les méthodes non supervisées servent quand on les combine avec les autres.
 
 Code : src/melange_complet.py et tentative_9.py
+
+### Tentative 10 : item-to-item avec le contenu des livres
+
+Jusqu'ici l'item-to-item comparait les livres par leurs lecteurs. Ici on les compare par ce qu'ils contiennent, avec les infos de items.csv.
+
+- Pour chaque livre on fait un texte avec le titre, l'auteur et les sujets, qu'on transforme en TF-IDF.
+- On calcule la similarité cosinus entre les livres.
+- Pour un lecteur, chaque livre qu'il a emprunté donne des points aux livres qui lui ressemblent. On garde les 300 meilleurs candidats, puis les 10 premiers.
+- Un livre se ressemble à lui-même, donc les réemprunts restent proposés.
+
+L'avantage c'est que ça marche aussi pour les livres peu empruntés, et que ça trouve les suites d'une série ou les autres livres d'un même auteur. Par contre le modèle ne sait pas ce que les gens empruntent vraiment ensemble.
+
+Le score Kaggle est 0.14480. C'est un peu sous la baseline, mais pas très loin, alors que le modèle ne regarde jamais les autres lecteurs.
+
+Code : src/contenu.py et tentative_10.py
+
+### Tentative 11 : mélange complet avec le contenu
+
+Le contenu apporte une info que les quatre autres modèles n'ont pas, donc on l'a ajouté au mélange de la tentative 9. On garde les proportions de la tentative 9 multipliées par 0.8 et on donne 0.2 au contenu : 0.512 pour l'item-to-item, 0.128 pour le user-to-user, 0.08 pour les règles d'association, 0.08 pour le clustering et 0.2 pour le contenu.
+
+Le score Kaggle est 0.16828, c'est notre meilleur.
+
+Code : src/melange_contenu.py et tentative_11.py
 
 ## 6. Progression
 
@@ -140,11 +163,13 @@ Code : src/melange_complet.py et tentative_9.py
 | 24/11 | 7. Clustering (11 groupes) | 0.02392 |
 | 25/11 | 8. Règles d'association | 0.02721 |
 | 25/11 | 9. Mélange complet | 0.16768 |
+| 25/11 | 10. Contenu (titre, auteur, sujets) | 0.14480 |
+| 25/11 | 11. Mélange complet + contenu | 0.16828 |
 | | Baseline | 0.15283 |
 
 ## 7. Gain par rapport à la baseline
 
-Notre meilleur score Kaggle est 0.16768 avec la tentative 9, contre 0.15283 pour la baseline. Ça fait 0.01485 de plus, soit environ 10%.
+Notre meilleur score Kaggle est 0.16828 avec la tentative 11, contre 0.15283 pour la baseline. Ça fait 0.01545 de plus, soit environ 10%.
 
 ## 8. Exemples de recommandations
 
@@ -157,7 +182,8 @@ Notre meilleur score Kaggle est 0.16768 avec la tentative 9, contre 0.15283 pour
 | Python | boucles et dictionnaires pour les modèles |
 | VS Code | écrire et lancer le code |
 | pandas | lecture des données et écriture des soumissions |
-| scikit-learn | TF-IDF et k-means |
+| numpy | tri des livres les plus proches |
+| scikit-learn | TF-IDF, k-means et similarité cosinus |
 | matplotlib | graphique du coude |
 | mlxtend | règles d'association |
 | Streamlit | application |
@@ -180,7 +206,7 @@ Mettre les 3 fichiers de Kaggle dans le dossier data puis lancer la tentative vo
 python tentative_2.py
 ```
 
-Le fichier pour Kaggle est écrit dans le dossier submissions. Les tentatives 8 et 9 sont plus longues (7 à 9 minutes) à cause de fpgrowth.
+Le fichier pour Kaggle est écrit dans le dossier submissions. Les tentatives 8, 9 et 11 sont plus longues (7 à 10 minutes) à cause de fpgrowth.
 
 Pour refaire le graphique du coude :
 
