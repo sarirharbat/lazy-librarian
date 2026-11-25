@@ -86,52 +86,29 @@ On a essayé plusieurs poids et on a gardé 0.8 pour l'item-to-item et 0.2 pour 
 
 Code : src/melange.py et tentative_6.py
 
-### Tentative 7 : groupes de lecteurs (clustering)
+### Tentative 7 : clustering
 
-Pour la deuxième partie on passe à l'apprentissage non supervisé. L'idée est de regrouper les lecteurs qui lisent sur les mêmes sujets, puis de proposer à chacun les livres les plus empruntés de son groupe.
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$
 
-- Chaque lecteur est représenté par les sujets de ses livres (colonne Subjects de items.csv), transformés en TF-IDF.
-- On fait les groupes avec k-means.
-- Pour choisir le nombre de groupes on a utilisé la méthode du coude : on calcule l'inertie pour k de 2 à 50. La courbe se casse à k = 11, donc on a pris 11 groupes.
-- Chaque lecteur reçoit les livres les plus empruntés de son groupe. S'il en manque on complète avec les plus populaires.
+On a regroupé les lecteurs avec k-means (11 groupes, choisis avec la méthode du coude) et proposé à chacun les livres les plus empruntés de son groupe. Score Kaggle : 0.02392. Le clustering n'est ni du user-to-user ni de l'item-to-item.
 
-![Méthode du coude](coude.png)
-
-Les groupes ont du sens : droit suisse, histoire suisse, soins infirmiers, mangas, BD, romans, livres jeunesse, dictionnaires, guides de voyage, manuels scolaires, et un grand groupe plus mélangé.
-
-Par contre le résultat n'est pas celui qu'on espérait. Le score Kaggle est 0.02392, très loin de la baseline. Tous les lecteurs d'un même groupe reçoivent les mêmes 10 livres, donc au final c'est presque la tentative 1 mais par groupe. En plus le modèle ne tient presque plus compte de ce que le lecteur a emprunté lui-même, alors que les réemprunts comptent beaucoup (tentative 3). Et le grand groupe mélangé contient 43% des lecteurs, eux reçoivent surtout des livres populaires.
-
-$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Le clustering n'est ni du user-to-user ni de l'item-to-item, alors que les consignes n'autorisent que ces deux méthodes ou un mélange des deux.
-
-Code : src/clustering.py, coude.py et tentative_7.py
+Code : dossier des tentatives non retenues
 
 ### Tentative 8 : règles d'association
 
-On a ensuite essayé l'autre méthode non supervisée vue en cours : les règles d'association, du type "ceux qui empruntent A empruntent aussi B".
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$
 
-- On fait un panier par lecteur avec les livres qu'il a empruntés, et on cherche les paires de livres souvent empruntées ensemble avec fpgrowth.
-- On garde les règles avec une confiance d'au moins 0.35 et un lift plus grand que 1, comme en cours.
-- Le support minimal est de 2 lecteurs. Avec 0.04 comme en cours il ne sortait aucune règle, nos données sont beaucoup plus dispersées.
-- Pour un lecteur, on prend les règles qui partent d'un livre qu'il a emprunté, on enlève les livres qu'il a déjà empruntés et on garde la meilleure règle pour chaque livre, triée par confiance.
+On a cherché les livres souvent empruntés ensemble avec fpgrowth, du type "ceux qui empruntent A empruntent aussi B". Score Kaggle : 0.02721. Ce n'est ni du user-to-user ni de l'item-to-item, et ça utilise la librairie mlxtend.
 
-Le score Kaggle est 0.02721. Comme pour la tentative 3, enlever les livres déjà empruntés fait chuter le score, alors que les réemprunts sont nombreux.
-
-$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Les règles d'association ne sont ni du user-to-user ni de l'item-to-item, et elles utilisent la librairie mlxtend. Ça ne correspond pas aux consignes.
-
-Code : src/regles_association.py et tentative_8.py
+Code : dossier des tentatives non retenues
 
 ### Tentative 9 : mélange complet
 
-Seules, les deux méthodes non supervisées donnent de mauvais scores, mais elles apportent des infos que les autres modèles n'ont pas : le domaine du lecteur pour le clustering, et les livres souvent empruntés ensemble pour les règles. On a donc fait comme pour la tentative 6 et on a mélangé les quatre modèles.
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$
 
-- Les points de chaque modèle sont divisés par leur maximum pour être entre 0 et 1.
-- Poids : 0.64 pour l'item-to-item, 0.16 pour le user-to-user (les poids de la tentative 6 réduits), 0.1 pour les règles d'association et 0.1 pour le clustering.
+Mélange de l'item-to-item, du user-to-user, du clustering et des règles d'association. Score Kaggle : 0.16768. C'est plus que la tentative 6, mais le mélange contient les deux méthodes non conformes, c'était seulement un test.
 
-Le score Kaggle est 0.16768, un peu mieux que la tentative 6.
-
-$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes : seulement du user-to-user, de l'item-to-item ou un mélange des deux. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
-
-Code : src/melange_complet.py et tentative_9.py
+Code : dossier des tentatives non retenues
 
 ### Tentative 10 : item-to-item avec le contenu des livres
 
@@ -150,13 +127,11 @@ Code : src/contenu.py et tentative_10.py
 
 ### Tentative 11 : mélange complet avec le contenu
 
-Le contenu apporte une info que les quatre autres modèles n'ont pas, donc on l'a ajouté au mélange de la tentative 9. On garde les proportions de la tentative 9 multipliées par 0.8 et on donne 0.2 au contenu : 0.512 pour l'item-to-item, 0.128 pour le user-to-user, 0.08 pour les règles d'association, 0.08 pour le clustering et 0.2 pour le contenu.
+$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$
 
-Le score Kaggle est 0.16828, c'est le plus haut qu'on ait eu.
+Mélange de la tentative 9 avec le contenu de la tentative 10. Score Kaggle : 0.16828. C'est notre score le plus haut, mais on ne le retient pas pour la même raison que la tentative 9.
 
-$\color{red}{\textbf{Non retenu : non conforme aux consignes.}}$ Comme la tentative 9, ce mélange contient le clustering et les règles d'association (avec mlxtend), qui ne correspondent pas aux consignes. C'est seulement un test, même si le score est plus élevé on ne le retient pas.
-
-Code : src/melange_contenu.py et tentative_11.py
+Code : dossier des tentatives non retenues
 
 ## 6. Progression
 
@@ -214,12 +189,12 @@ Mettre les 3 fichiers de Kaggle dans le dossier data puis lancer la tentative vo
 python tentative_2.py
 ```
 
-Le fichier pour Kaggle est écrit dans le dossier submissions. Les tentatives 8, 9 et 11 sont plus longues (7 à 10 minutes) à cause de fpgrowth.
+Le fichier pour Kaggle est écrit dans le dossier submissions.
 
-Pour refaire le graphique du coude :
+Les tentatives non retenues sont dans le dossier tentatives_non_retenues_pour_non_conformite_aux_consignes. Il faut les lancer avec -m, par exemple :
 
 ```
-python coude.py
+python -m tentatives_non_retenues_pour_non_conformite_aux_consignes.tentative_7
 ```
 
 Pour l'application :
