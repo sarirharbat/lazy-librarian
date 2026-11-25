@@ -1,4 +1,4 @@
-from src.melange_complet import MelangeComplet
+from tentatives_non_retenues_pour_non_conformite_aux_consignes.melange_complet import MelangeComplet
 from src.contenu import Contenu
 
 
