@@ -5,9 +5,9 @@ from src.item_to_item import ItemToItem
 from src.user_to_user import UserToUser
 from src.contenu import Contenu
 from src.melange_trois import MelangeTrois
+from src.explications import expliquer
 
 historique = charger_emprunts()
-lecteurs = [lecteur for lecteur in historique]
 
 modeles = {
     "item_to_item": ItemToItem(),
@@ -19,6 +19,16 @@ modeles = {
 for nom in modeles:
     modele = modeles[nom]
     modele.fit(historique)
-    tableau = pd.DataFrame({"lecteur": lecteurs, "recommandation": [" ".join(str(livre) for livre in modele.recommander(lecteur)) for lecteur in lecteurs]})
+    colonnes = {"lecteur": [], "rang": [], "livre": [], "raison": [], "source": []}
+    for lecteur in historique:
+        livres = modele.recommander(lecteur)
+        raisons = expliquer(nom, modele, historique, lecteur, livres)
+        for n in range(len(livres)):
+            colonnes["lecteur"].append(lecteur)
+            colonnes["rang"].append(n + 1)
+            colonnes["livre"].append(livres[n])
+            colonnes["raison"].append(raisons[n][0])
+            colonnes["source"].append(raisons[n][1])
+    tableau = pd.DataFrame(colonnes)
     tableau.to_csv("recommandations/" + nom + ".csv", index=False)
     print("recommandations/" + nom + ".csv créé")
