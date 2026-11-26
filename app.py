@@ -6,7 +6,6 @@ st.title("The Lazy Librarian")
 livres = pd.read_csv("data/items.csv")
 livres = livres.fillna("")
 emprunts = pd.read_csv("data/interactions.csv")
-recommandations = pd.read_csv("recommandations/item_to_item.csv")
 
 profils = {
     "Lecteur de mangas (n° 991)": 991,
@@ -16,9 +15,20 @@ profils = {
 
 choix = st.radio("Lecteur", list(profils) + ["Autre lecteur"])
 if choix == "Autre lecteur":
-    lecteur = st.number_input("Numéro du lecteur", min_value=0, max_value=int(recommandations["lecteur"].max()), step=1)
+    lecteur = st.number_input("Numéro du lecteur", min_value=0, max_value=int(emprunts["u"].max()), step=1)
 else:
     lecteur = profils[choix]
+
+modeles = {
+    "Mélange item-to-item, user-to-user et contenu": ["melange", "0.16800"],
+    "Item-to-item": ["item_to_item", "0.16373"],
+    "User-to-user": ["user_to_user", "0.15366"],
+    "Contenu (titre, auteur, sujets)": ["contenu", "0.14480"],
+}
+
+nom = st.selectbox("Modèle", list(modeles))
+fichier, score = modeles[nom]
+recommandations = pd.read_csv("recommandations/" + fichier + ".csv")
 
 deja = emprunts[emprunts["u"] == lecteur]
 deja = pd.merge(deja, livres, on="i", how="left")
@@ -29,7 +39,7 @@ st.subheader("Déjà empruntés (" + str(len(deja)) + ")")
 st.dataframe(tableau, hide_index=True)
 
 st.subheader("Recommandations")
-st.write("Modèle : item-to-item")
+st.write("Modèle utilisé : **" + nom + "** (score Kaggle " + score + ")")
 
 ligne = recommandations[recommandations["lecteur"] == lecteur]
 numeros = ligne["recommandation"].values[0].split(" ")
