@@ -216,6 +216,8 @@ python calculer_recommandations.py
 streamlit run app.py
 ```
 
+Le site marche sans internet : tout est lu depuis les fichiers du projet.
+
 ## Conclusion
 
 à faire
