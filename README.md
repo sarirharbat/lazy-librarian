@@ -18,7 +18,32 @@ On doit prédire 10 livres par lecteur. Kaggle donne un score à chaque soumissi
 
 ## 3. EDA
 
-à faire
+La plupart des chiffres viennent de eda.py.
+
+**Volume et sparsité**
+
+- 87 047 emprunts, 7 838 lecteurs et 15 109 livres empruntés. Le catalogue (items.csv) a 15 291 livres, donc 182 livres n'ont jamais été empruntés.
+- Les emprunts vont de janvier 2023 à octobre 2024.
+- Si on fait un tableau lecteurs x livres, seulement 0.074 % des cases sont remplies. Les données sont donc très clairsemées : un lecteur a en moyenne 11 emprunts sur plus de 15 000 livres.
+- Dans items.csv, l'auteur manque pour 17 % des livres et les sujets pour 15 %.
+
+**Emprunts par lecteur**
+
+Chaque lecteur a au moins 3 emprunts. La moitié en a 6 ou moins, la moyenne est de 11 et le plus gros lecteur en a 385. 31 % des lecteurs ont exactement 3 emprunts.
+
+**Emprunts par livre**
+
+La moitié des livres sont empruntés entre 3 et 6 fois. Le plus emprunté l'est 380 fois, mais les 100 livres les plus empruntés ne font que 9.6 % des emprunts. C'est pour ça que proposer les mêmes livres à tout le monde ne marche pas (tentative 1).
+
+**Cold start**
+
+- 47.7 % des lecteurs ont 5 emprunts ou moins, on a donc peu d'infos sur eux. Le contenu des livres (tentative 10) aide ici, parce qu'il marche même avec un seul livre emprunté.
+- 69.1 % des livres sont empruntés 5 fois ou moins et 4.6 % une seule fois. Pour ces livres, l'item-to-item trouve peu de lecteurs en commun.
+- Les 182 livres jamais empruntés ne peuvent être proposés que par le contenu.
+
+**Réemprunts**
+
+26.5 % des emprunts sont des réemprunts, et 51.8 % des lecteurs ont réemprunté au moins un livre. C'est pour ça que nos modèles gardent les livres déjà empruntés (tentative 3).
 
 ## 4. Le schéma qu'on a suivi
 
@@ -58,7 +83,7 @@ Code : src/item_to_item.py et tentative_2.py
 
 Dans la tentative 2 le modèle propose souvent des livres que le lecteur a déjà empruntés. On s'est demandé si c'était vraiment utile, donc on a refait la même chose en les enlevant.
 
-Le score Kaggle tombe à 0.025. En regardant les données on a vu qu'environ 30% des emprunts sont des réemprunts, les gens reprennent souvent le même livre. On a donc gardé les réemprunts.
+Le score Kaggle tombe à 0.025. En regardant les données on a vu que 26.5 % des emprunts sont des réemprunts, les gens reprennent souvent le même livre. On a donc gardé les réemprunts.
 
 Code : src/sans_reemprunts.py et tentative_3.py
 
