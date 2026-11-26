@@ -10,4 +10,7 @@ __pycache__/
 # soumissions
 submissions/*.csv
 
+# recommandations du site
+recommandations/*.csv
+
 .DS_Store
