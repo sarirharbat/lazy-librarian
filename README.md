@@ -209,9 +209,10 @@ Les tentatives non retenues sont dans le dossier tentatives_non_retenues_pour_no
 python -m tentatives_non_retenues_pour_non_conformite_aux_consignes.tentative_7
 ```
 
-Pour l'application :
+Pour l'application, il faut d'abord calculer les recommandations de chaque modèle (2 à 3 minutes, à refaire seulement si un modèle change), puis lancer le site :
 
 ```
+python calculer_recommandations.py
 streamlit run app.py
 ```
 
