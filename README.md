@@ -193,26 +193,47 @@ Notre meilleur score Kaggle retenu est 0.16800 avec la tentative 12, contre 0.15
 
 ## 8. Exemples de recommandations
 
-à faire
+Les exemples viennent du mélange de la tentative 12. On donne le numéro de chaque lecteur pour pouvoir le retrouver sur le site.
+
+**Bon exemple : lecteur 991 (mangas)**
+
+Il a 20 emprunts, dont 16 fois le manga *L'académie Alice*. Le modèle lui repropose ce manga en premier, puis 9 autres mangas (*UQ Holder !*, *Fruits basket*, *Tsubaki love*, *GTO*...). Ils viennent tous de l'item-to-item : ce sont des mangas que les autres lecteurs de *L'académie Alice* ont aussi empruntés.
+
+**Bon exemple : lecteur 3089 (nouveau lecteur en droit pénal)**
+
+Il n'a que 3 emprunts, tous sur la procédure pénale suisse. Le modèle lui repropose ses 3 livres, puis des codes et des traités de procédure pénale (*CPP : Code de procédure pénale*, *Traité de procédure pénale suisse*...). Même avec très peu d'emprunts, les propositions restent dans son domaine.
+
+**Mauvais exemple : lecteur 947**
+
+Il a emprunté 20 fois le même livre en latin, les œuvres de Duns Scot. Personne d'autre ne l'a emprunté et il n'a pas de sujets dans items.csv, donc l'item-to-item et le user-to-user n'ont rien à proposer. Le contenu trouve deux livres proches (les œuvres d'Érasme et de saint Ambroise), mais aussi *Opera negra*, une bande dessinée qui ressort seulement à cause du mot « opera ». Le reste est complété avec les livres les plus populaires : un dictionnaire et des mangas (*Demon slayer*, *Spy x Family*...), qui ne correspondent pas du tout à ce lecteur.
+
+**Mauvais exemple : peu de nouveaux livres**
+
+Comme les réemprunts sont fréquents, le modèle met souvent en premier les livres déjà empruntés. Pour 1 741 lecteurs (22 %), les 10 propositions sont toutes des livres qu'ils ont déjà empruntés. Ça aide le score, mais ça ne leur fait découvrir aucun nouveau livre.
 
 ## 9. Outils
 
-| Outil | Utilisation |
-|-------|-------------|
-| Python | boucles et dictionnaires pour les modèles |
-| VS Code | écrire et lancer le code |
-| pandas | lecture des données et écriture des soumissions |
-| numpy | tri des livres les plus proches |
-| scikit-learn | TF-IDF et similarité cosinus (k-means seulement pour un test non retenu) |
-| matplotlib | graphique du coude (test non retenu) |
-| mlxtend | règles d'association (test non retenu) |
-| Streamlit | application |
-| GitHub | partage du code |
-| Kaggle | données et soumissions |
+| Outil | Utilisation | Coût |
+|-------|-------------|------|
+| Python | boucles et dictionnaires pour les modèles | gratuit |
+| VS Code | écrire et lancer le code | gratuit |
+| pandas | lecture des données et écriture des soumissions | gratuit |
+| numpy | tri des livres les plus proches | gratuit |
+| scikit-learn | TF-IDF et similarité cosinus (k-means seulement pour un test non retenu) | gratuit |
+| matplotlib | graphique du coude (test non retenu) | gratuit |
+| mlxtend | règles d'association (test non retenu) | gratuit |
+| Streamlit | site | gratuit |
+| GitHub | partage du code | gratuit |
+| Kaggle | données et soumissions | gratuit |
+
+Tous les outils sont gratuits, le projet n'a rien coûté. Tout tourne en local, sans serveur ni service payant : le calcul des recommandations pour le site prend 2 à 3 minutes.
 
 ## 10. Collaborations et sources
 
-à faire
+- Tmax501 a fait l'EDA (eda.py).
+- Les labs du cours : filtrage collaboratif et similarité cosinus (lab 6), TF-IDF pour le texte (lab 5), k-means et règles d'association (lab 9, seulement pour les tests non retenus).
+- Les données de la compétition Kaggle The Lazy Librarian.
+- Les documentations de pandas, scikit-learn et Streamlit.
 
 ## 11. Lancer le projet
 
@@ -245,4 +266,8 @@ Le site marche sans internet : tout est lu depuis les fichiers du projet.
 
 ## Conclusion
 
-à faire
+Notre meilleur modèle retenu est le mélange de la tentative 12, avec 0.16800 sur Kaggle, environ 10 % au-dessus de la baseline. Ce qui a le plus aidé : l'item-to-item, garder les livres déjà empruntés, et ajouter le contenu des livres pour les lecteurs et les livres avec peu d'emprunts. Le user-to-user seul est moins bon, mais il apporte un peu dans le mélange.
+
+Les tentatives avec le clustering et les règles d'association ont donné un score un peu plus haut (0.16828), mais on ne les a pas retenues parce qu'elles ne respectent pas les consignes.
+
+Les limites : le modèle propose surtout des livres déjà empruntés, et pour les lecteurs avec des livres rares il se rabat sur les livres populaires, qui ne leur correspondent pas toujours.
