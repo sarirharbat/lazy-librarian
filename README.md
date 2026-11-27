@@ -230,7 +230,7 @@ Tous les outils sont gratuits, le projet n'a rien coûté. Tout tourne en local,
 
 ## 10. Collaborations et sources
 
-- Tmax501 a fait l'EDA (eda.py).
+- L'équipe : sarirharbat, Tmax501 et eliassshh00. Tmax501 a fait l'EDA (eda.py).
 - Les labs du cours : filtrage collaboratif et similarité cosinus (lab 6), TF-IDF pour le texte (lab 5), k-means et règles d'association (lab 9, seulement pour les tests non retenus).
 - Les données de la compétition Kaggle The Lazy Librarian.
 - Les documentations de pandas, scikit-learn et Streamlit.
