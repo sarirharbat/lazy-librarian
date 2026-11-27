@@ -2,7 +2,7 @@
 
 Projet Kaggle : recommander à chaque lecteur les 10 livres qu'il a le plus de chances d'emprunter ensuite.
 
-- Equipe Kaggle : UNIL_
+- Equipe Kaggle : UNIL_Nestlé
 - Score Kaggle retenu : 0.16800
 - Vidéo :
 
